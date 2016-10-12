@@ -217,6 +217,15 @@ class Team < ActiveRecord::Base
         return self.generate_team_name(Assignment.find(id).name)
       end
     end
+    if handle_dups == "renameOldTeam" # rename: rename new team
+      if teamtype.is_a?(CourseTeam)
+	team.generate_team_name(Course.find(id).name)
+        return name
+      elsif teamtype.is_a?(AssignmentTeam)
+	team.generate_team_name(Course.find(id).name)
+        return name
+      end
+    end
     if handle_dups == "replace" # replace: delete old team
       team.delete
       return name
